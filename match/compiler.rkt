@@ -2,10 +2,10 @@
 
 (require (for-template whalesong/lang/whalesong
                        ; racket/base 
-          "runtime.rkt"
-          racket/stxparam
-          ; racket/unsafe/ops
-          )
+                       "runtime.rkt"
+                       racket/stxparam
+                       ; racket/unsafe/ops
+                       )
          syntax/boundmap
          syntax/stx
          "patterns.rkt"
@@ -117,7 +117,9 @@
      (let* ([s (Row-first-pat (car rows))]
             [accs (Struct-accessors s)]
             [accs (if (Struct-complete? s)
-                      (build-list (length accs) (λ (i) #`(λ (x) (unsafe-struct-ref x #,i))))
+                      (build-list (length accs) 
+                                  (λ (i) (with-syntax ([a (list-ref accs i)])
+                                           #`(λ (x) (a x))))) ; [Whalesong]
                       accs)]
             [pred (Struct-pred s)])
        (compile-con-pat accs pred Struct-ps))]

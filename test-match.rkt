@@ -1,6 +1,7 @@
 #lang whalesong
 (require "match/match.rkt")
 
+(begin
 (match (list 3 4)
   [(list x y) (+ x y )])
 
@@ -17,6 +18,12 @@
   [(app odd? x) x])
 
 (match "foo"
-  ["foo" 7])
+  ["foo" 7]))
+
+(struct foo (bar baz))
+(match (foo 41 42)
+  [(struct foo (x y)) (list x y)])
+
+
 
 
